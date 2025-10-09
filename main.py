@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6.QtWidgets import QApplication
-import fenetre_principale
+from fenetre_principale import FonctionView
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

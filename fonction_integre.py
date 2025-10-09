@@ -5,15 +5,15 @@ import sympy as sp
 class FonctionModel(QObject):
     __x = sp.symbols("x")
     __fonction: None = None
-    __borne_inf : int = 0
-    __borne_sup : int = 10
+    __borne_inf : float = 0.0
+    __borne_sup : float = 10.0
     __est_droite : bool = False
     __valeur_somme : float = 0
     __valeur_integrale : float = 0
 
     modelChanged = pyqtSignal()
 
-    def __init(self):
+    def __init__(self):
         super().__init__()
 
     @property
@@ -28,6 +28,7 @@ class FonctionModel(QObject):
     @fonction.setter
     def fonction(self, value):
         self.__fonction = sp.sympify(value)
+        self.modelChanged.emit()
 
     @property
     def borne_inf(self):

@@ -4,26 +4,23 @@ from PyQt6.QtWidgets import QMessageBox
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from fonction_integre import FonctionModel
 
-
 class MPLCanvas(FigureCanvas):
-    __model: FonctionModel
-
-    def __init__(self,modele: FonctionModel):
+    def __init__(self, modele: FonctionModel):
         self.__fig, self.__ax = plt.subplots()
         super().__init__(self.__fig)
 
         self.__model = modele
         self.__model.modelChanged.connect(self.dessiner)
 
+
     def dessiner(self):
-        try :
+        try:
             self.__ax.clear()
             f = self.__model.fonction
-            if f :
-                x = np.linespace (FonctionModel.borne_inf, FonctionModel.borne_sup, 1000)
+            if f is not None:
+                x = np.linspace(self.__model.borne_inf, self.__model.borne_sup.borne_sup, 1000)
                 y = f(x)
-
-                self.__ax.plot(x,y)
+                self.__ax.plot(x, y)
             self.draw()
         except Exception as e:
-            QMessageBox.critical(self, "Erreur", "La fonction n'est point valide")
+            QMessageBox.critical(self, "Erreur", f"La fonction n'est pas valide :\n{e}")

@@ -28,13 +28,16 @@ class FonctionView(QMainWindow):
         canvas = MPLCanvas(self.model)
         self.canvas_layout.addWidget(canvas)
 
-        self.fonctionLineEdit.editingFinished.connect(self.fonction_edit, canvas.dessiner)
+        self.borneInfLineEdit.editingFinished.connect()
+        self.fonctionLineEdit.editingFinished.connect(self.fonction_edit)
+        self.fonctionLineEdit.editingFinished.connect(canvas.dessiner)
 
 
     def fonction_edit(self):
         fonct_str = self.fonctionLineEdit.text()
         if self.model.validate_fonction(fonct_str) :
             self.model.fonction = fonct_str
+            #attribuer les bornes
 
         else :
             QMessageBox.critical(self, "Erreur", "La fonction est invalide")
