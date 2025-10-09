@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from PyQt6.QtWidgets import QMessageBox
-from matplotlib_inline.backend_inline import FigureCanvas
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+from fonction_integre import FonctionModel
 
 
-class MPLCanvas(FigureCanvas)
+class MPLCanvas(FigureCanvas):
     __model: FonctionModel
 
     def __init__(self,modele: FonctionModel):
@@ -12,14 +13,14 @@ class MPLCanvas(FigureCanvas)
         super().__init__(self.__fig)
 
         self.__model = modele
-        self.__model.modeChanged.connect(self.dessiner)
+        self.__model.modelChanged.connect(self.dessiner)
 
     def dessiner(self):
         try :
             self.__ax.clear()
             f = self.__model.fonction
             if f :
-                x = np.linespace (0, 10, 1000)
+                x = np.linespace (FonctionModel.borne_inf, FonctionModel.borne_sup, 1000)
                 y = f(x)
 
                 self.__ax.plot(x,y)
