@@ -47,6 +47,22 @@ class FonctionModel(QObject):
         self.__borne_sup = value
         self.modelChanged.emit()
 
+    @property
+    def variable(self):
+        return self.__x
+
+    def validate_fonction(self, f_str):
+        try:
+            expr = sp.sympify(f_str)
+            if self.__x not in expr.free_symbols:
+                print("La fonction doit contenir la variable x.")
+                return False
+            sp.lambdify(self.__x, expr, "numpy")
+            return True
+        except Exception as e:
+            print(f"Erreur lors de la validation de la fonction : {e}")
+            return False
+
 
 
 
