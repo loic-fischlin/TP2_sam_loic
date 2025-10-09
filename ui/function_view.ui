@@ -20,42 +20,42 @@
       <item row="1" column="2">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>TextLabel</string>
+         <string>Borne Sup</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>TextLabel</string>
+         <string>Fonction</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="borneInfLineEdit"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>TextLabel</string>
+         <string>Borne inf</string>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QLineEdit" name="lineEdit_3"/>
+       <widget class="QLineEdit" name="borneSupLineEdit"/>
       </item>
       <item row="0" column="1" colspan="3">
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="fonctionLineEdit"/>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout"/>
+     <layout class="QVBoxLayout" name="canvas_layout"/>
     </item>
     <item>
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
-       <string>GroupBox</string>
+       <string>Intégration</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
@@ -68,23 +68,23 @@
           </widget>
          </item>
          <item>
-          <widget class="QSlider" name="horizontalSlider">
+          <widget class="QSlider" name="nombreSlider">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_2">
+          <widget class="QRadioButton" name="gaucheRadioButton">
            <property name="text">
-            <string>RadioButton</string>
+            <string>Somme à gauche</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton">
+          <widget class="QRadioButton" name="droiteRadioButton">
            <property name="text">
-            <string>RadioButton</string>
+            <string>Somme à droite</string>
            </property>
           </widget>
          </item>
@@ -102,16 +102,16 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="calculerPushButton">
            <property name="text">
-            <string>PushButton</string>
+            <string>Calculer</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="exporterPushButton">
            <property name="text">
-            <string>PushButton</string>
+            <string>Exporter</string>
            </property>
           </widget>
          </item>
@@ -127,7 +127,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_4"/>
+          <widget class="QLineEdit" name="sommeLineEdit"/>
          </item>
          <item>
           <spacer name="horizontalSpacer_2">
@@ -153,7 +153,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_5"/>
+          <widget class="QLineEdit" name="integraleLineEdit"/>
          </item>
         </layout>
        </item>
