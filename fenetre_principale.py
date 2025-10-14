@@ -27,10 +27,29 @@ class FonctionView(QMainWindow):
         self.model = FonctionModel()
         self.canvas = MPLCanvas(self.model)
         self.canvas_layout.addWidget(self.canvas)
+        self.calculerPushButton.clicked.connect(self.calculer_edit)
 
         self.borneInfLineEdit.editingFinished.connect(self.fonction_edit)
         self.borneSupLineEdit.editingFinished.connect(self.fonction_edit)
         self.fonctionLineEdit.editingFinished.connect(self.fonction_edit)
+
+        self.integraleLineEdit.setEnabled(False)
+        self.sommeLineEdit.setEnabled(False)
+
+    def calculer_edit(self):
+
+        self.model.est_droite = self.droiteRadioButton.isChecked()
+
+        integrale = self.model.calculer_integrale()
+        self.integraleLineEdit.setText(str(integrale))
+
+        somme, xs, ys, dx = self.model.calculer_somme(self.nombreSlider.value())
+        self.sommeLineEdit.setText(str(somme))
+
+
+        self.canvas.dessiner()
+        self.canvas.dessiner_rectagles(xs, ys, dx)
+
 
 
     def fonction_edit(self):
@@ -39,6 +58,8 @@ class FonctionView(QMainWindow):
             self.model.fonction = fonct_str
             self.model.borne_inf = self.borneInfLineEdit.text() or 0.0
             self.model.borne_sup = self.borneSupLineEdit.text() or 10.0
+            self.nombreSlider.setMinimum(10)
+            self.nombreSlider.setMaximum(100)
             self.canvas.dessiner()
 
         else :

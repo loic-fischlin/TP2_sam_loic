@@ -32,6 +32,15 @@ class FonctionModel(QObject):
         self.modelChanged.emit()
 
     @property
+    def est_droite(self):
+        return self.__est_droite
+
+    @est_droite.setter
+    def est_droite (self, value):
+        self.__est_droite = bool(value)
+        self.modelChanged.emit()
+
+    @property
     def borne_inf(self):
         return self.__borne_inf
 
@@ -90,13 +99,21 @@ class FonctionModel(QObject):
         return self.__valeur_integrale
 
     def calculer_integrale(self):
-        integrale = sp.integrate(self.__fonction, self.__x, self.__borne_inf, self.__borne_sup)
+        try:
+            self.__valeur_integrale = float(
+                sp.integrate(self.__fonction, (self.__x, self.__borne_inf, self.__borne_sup))
+            )
+        except Exception as e:
+            print(f"Erreur calcul intégrale : {e}")
+            self.__valeur_integrale = 0
+        self.modelChanged.emit()
+        return self.__valeur_integrale
 
     @property
     def valeur_somme(self):
         return self.__valeur_somme
 
-    def calculer_somme(self, n, cote):
+    def calculer_somme(self, n):
 
         f_num = sp.lambdify(self.__x, self.__fonction, "numpy")
 
@@ -105,7 +122,7 @@ class FonctionModel(QObject):
         dx = (b-a) / n
 
         # calcule des points cherché sur chatGPT
-        if cote == "true":
+        if self.est_droite:
             xs = np.linspace(a, b - dx, n)
         else :
             xs = np.linspace(a + dx, b, n)
@@ -113,6 +130,6 @@ class FonctionModel(QObject):
         ys = f_num(xs)
         somme = float(np.sum(ys * dx))
         self.modelChanged.emit()
-        return somme
+        return somme, xs, ys, dx
 
 

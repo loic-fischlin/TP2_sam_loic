@@ -12,6 +12,21 @@ class MPLCanvas(FigureCanvas):
         self.__model = modele
         self.__model.modelChanged.connect(self.dessiner)
 
+    def dessiner_rectagles(self, xs, ys, dx : float):
+        # Tracage des rectangles inspiré de chat GPT
+        for x_i, y_i in zip(xs, ys):
+            rect_x = x_i - dx if self.__model.est_droite else x_i
+            rect = plt.Rectangle(
+                (rect_x, 0),
+                dx,
+                y_i,
+                facecolor="green",
+                edgecolor="blue",
+                alpha=0.5
+            )
+            self.__ax.add_patch(rect)
+
+
     def dessiner(self):
         try:
             self.__ax.clear()
