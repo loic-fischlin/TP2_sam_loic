@@ -1,3 +1,4 @@
+import numpy as np
 from PyQt6.QtCore import QObject, pyqtSignal
 import sympy as sp
 
@@ -5,11 +6,11 @@ import sympy as sp
 class FonctionModel(QObject):
     __x = sp.symbols("x")
     __fonction: None = None
-    __borne_inf : float = 0.0
-    __borne_sup : float = 10.0
-    __est_droite : bool = False
-    __valeur_somme : float = 0
-    __valeur_integrale : float = 0
+    __borne_inf: float = 0.0
+    __borne_sup: float = 10.0
+    __est_droite: bool = False
+    __valeur_somme: float = 0
+    __valeur_integrale: float = 0
 
     modelChanged = pyqtSignal()
 
@@ -22,7 +23,7 @@ class FonctionModel(QObject):
             f = sp.lambdify(self.__x, self.__fonction, "numpy")
         except  Exception as e:
             print(e)
-            f=None
+            f = None
         return f
 
     @fonction.setter
@@ -36,8 +37,11 @@ class FonctionModel(QObject):
 
     @borne_inf.setter
     def borne_inf(self, value):
-        self.__borne_inf = float(value)
-        self.modelChanged.emit()
+        if self.validate_borne(value):
+            self.__borne_inf = float(value)
+            self.modelChanged.emit()
+        else:
+            print(f"Borne inférieure invalide : {value}")
 
     @property
     def borne_sup(self):
@@ -45,8 +49,11 @@ class FonctionModel(QObject):
 
     @borne_sup.setter
     def borne_sup(self, value):
-        self.__borne_sup = float(value)
-        self.modelChanged.emit()
+        if self.validate_borne(value):
+            self.__borne_sup = float(value)
+            self.modelChanged.emit()
+        else:
+            print(f"Borne supérieure invalide : {value}")
 
     @property
     def variable(self):
@@ -64,7 +71,48 @@ class FonctionModel(QObject):
             print(f"Erreur lors de la validation de la fonction : {e}")
             return False
 
+    def validate_borne(self, value):
+        try:
+            float(value)
+            return True
+        except ValueError:
+            return False
 
+    def validate_borne(self, value):
+        try:
+            float(value)
+            return True
+        except ValueError:
+            return False
 
+    @property
+    def valeur_integrale(self):
+        return self.__valeur_integrale
+
+    def calculer_integrale(self):
+        integrale = sp.integrate(self.__fonction, self.__x, self.__borne_inf, self.__borne_sup)
+
+    @property
+    def valeur_somme(self):
+        return self.__valeur_somme
+
+    def calculer_somme(self, n, cote):
+
+        f_num = sp.lambdify(self.__x, self.__fonction, "numpy")
+
+        a, b = self.__borne_inf, self.__borne_sup
+        n = int(n)
+        dx = (b-a) / n
+
+        # calcule des points cherché sur chatGPT
+        if cote == "true":
+            xs = np.linspace(a, b - dx, n)
+        else :
+            xs = np.linspace(a + dx, b, n)
+
+        ys = f_num(xs)
+        somme = float(np.sum(ys * dx))
+        self.modelChanged.emit()
+        return somme
 
 
