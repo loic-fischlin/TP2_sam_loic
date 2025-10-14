@@ -18,11 +18,9 @@ class MPLCanvas(FigureCanvas):
             f = self.__model.fonction
 
             if f is not None:
-                borne_inf_text = str(self.__model.borne_inf).strip()
-                borne_sup_text = str(self.__model.borne_sup).strip()
 
-                borne_inf = float(borne_inf_text) if borne_inf_text else 0.0
-                borne_sup = float(borne_sup_text) if borne_sup_text else 10.0
+                borne_inf = self.__model.borne_inf
+                borne_sup = self.__model.borne_sup
 
                 if borne_inf >= borne_sup:
                     QMessageBox.critical(self, "Erreur", "La borne inférieure doit être plus petite que la borne supérieure.")

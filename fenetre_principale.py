@@ -35,10 +35,10 @@ class FonctionView(QMainWindow):
 
     def fonction_edit(self):
         fonct_str = self.fonctionLineEdit.text()
-        if self.model.validate_fonction(fonct_str) :
+        if self.model.validate_fonction(fonct_str):
             self.model.fonction = fonct_str
-            self.model.borne_inf = self.borneInfLineEdit.text()
-            self.model.borne_sup = self.borneSupLineEdit.text()
+            self.model.borne_inf = self.borneInfLineEdit.text() or 0.0
+            self.model.borne_sup = self.borneSupLineEdit.text() or 10.0
             self.canvas.dessiner()
 
         else :

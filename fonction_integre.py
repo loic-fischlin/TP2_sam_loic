@@ -36,7 +36,7 @@ class FonctionModel(QObject):
 
     @borne_inf.setter
     def borne_inf(self, value):
-        self.__borne_inf = value
+        self.__borne_inf = float(value)
         self.modelChanged.emit()
 
     @property
@@ -45,7 +45,7 @@ class FonctionModel(QObject):
 
     @borne_sup.setter
     def borne_sup(self, value):
-        self.__borne_sup = value
+        self.__borne_sup = float(value)
         self.modelChanged.emit()
 
     @property
