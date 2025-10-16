@@ -22,7 +22,7 @@ class FonctionView(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        loadUi("ui/function_view.ui", self)
+        loadUi("ui/function_view2.ui", self)
 
         self.model = FonctionModel()
         self.canvas = MPLCanvas(self.model)
