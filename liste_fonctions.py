@@ -6,16 +6,16 @@ class ListeFonctionsModel(QAbstractListModel):
 
     def __init__(self, fonctions=None):
         super().__init__()
-        self._fonctions = fonctions or []
+        self.__fonctions = fonctions or []
 
     def rowCount(self, parent=QModelIndex()):
-        return len(self._fonctions)
+        return len(self.__fonctions)
 
-    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
-        if not index.isValid() or not (0 <= index.row() < len(self._fonctions)):
+    def data(self, index, role):
+        if not index.isValid() or not (0 <= index.row() < len(self.__fonctions)):
             return None
 
-        fonction = self._fonctions[index.row()]
+        fonction = self.__fonctions[index.row()]
 
         if role == Qt.ItemDataRole.DisplayRole:
             return str(fonction)
@@ -29,30 +29,22 @@ class ListeFonctionsModel(QAbstractListModel):
         if not fonction or fonction.strip() == "":
             return
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-        self._fonctions.append(fonction.strip())
+        self.__fonctions.append(fonction.strip())
         self.endInsertRows()
         self.dataChangedSignal.emit()
 
     def remove_item(self, index: int):
-        if 0 <= index < len(self._fonctions):
+        if 0 <= index < len(self.__fonctions):
             self.beginRemoveRows(QModelIndex(), index, index)
-            del self._fonctions[index]
+            del self.__fonctions[index]
             self.endRemoveRows()
             self.dataChangedSignal.emit()
 
-    def update_item(self, index: int, nouvelle_fonction: str):
-        if 0 <= index < len(self._fonctions) and nouvelle_fonction:
-            self._fonctions[index] = nouvelle_fonction.strip()
-            top_left = self.index(index, 0)
-            bottom_right = self.index(index, 0)
-            self.dataChanged.emit(top_left, bottom_right, [Qt.ItemDataRole.DisplayRole])
-            self.dataChangedSignal.emit()
+    def get_all(self) :
+        return self.__fonctions.copy()
 
-    def get_all(self) -> list[str]:
-        return self._fonctions.copy()
-
-    def to_dict(self) -> dict:
-        return {"fonctions": self._fonctions}
+    def to_dict(self) :
+        return {"fonctions": self.__fonctions}
 
     @classmethod
     def from_dict(cls, data: dict):
