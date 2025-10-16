@@ -87,13 +87,6 @@ class FonctionModel(QObject):
         except ValueError:
             return False
 
-    def validate_borne(self, value):
-        try:
-            float(value)
-            return True
-        except ValueError:
-            return False
-
     @property
     def valeur_integrale(self):
         return self.__valeur_integrale

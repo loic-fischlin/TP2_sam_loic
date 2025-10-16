@@ -10,7 +10,6 @@ class MPLCanvas(FigureCanvas):
         super().__init__(self.__fig)
 
         self.__model = modele
-        self.__model.modelChanged.connect(self.dessiner)
 
     def dessiner_rectagles(self, xs, ys, dx : float):
         # Tracage des rectangles inspiré de chat GPT
@@ -25,6 +24,7 @@ class MPLCanvas(FigureCanvas):
                 alpha=0.5
             )
             self.__ax.add_patch(rect)
+            self.draw()
 
 
     def dessiner(self):

@@ -37,6 +37,9 @@ class FonctionView(QMainWindow):
         self.sommeLineEdit.setEnabled(False)
 
     def calculer_edit(self):
+        if self.model.fonction is None:
+            QMessageBox.critical(self, "Erreur", "Veuillez entrer une fonction valide.")
+            return
 
         self.model.est_droite = self.droiteRadioButton.isChecked()
 
