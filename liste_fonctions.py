@@ -26,10 +26,10 @@ class ListeFonctionsModel(QAbstractListModel):
         return None
 
     def add_item(self, fonction: str):
-        if not fonction or fonction.strip() == "":
+        if not fonction or fonction == "":
             return
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-        self.__fonctions.append(fonction.strip())
+        self.__fonctions.append(fonction)
         self.endInsertRows()
         self.dataChangedSignal.emit()
 

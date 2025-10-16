@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QMainWindow, QLineEdit, QSlider, QVBoxLayout, QRadioButton, QPushButton, QMessageBox
+from PyQt6.QtWidgets import QMainWindow, QLineEdit, QSlider, QVBoxLayout, QRadioButton, QPushButton, QMessageBox, \
+    QComboBox
 from fonction_integre import FonctionModel
 from PyQt6.uic import loadUi
 
@@ -18,6 +19,7 @@ class FonctionView(QMainWindow):
     sommeLineEdit : QLineEdit
     integraleLineEdit : QLineEdit
 
+
     __model : FonctionModel
 
     def __init__(self):
@@ -31,7 +33,7 @@ class FonctionView(QMainWindow):
 
         self.borneInfLineEdit.editingFinished.connect(self.fonction_edit)
         self.borneSupLineEdit.editingFinished.connect(self.fonction_edit)
-        self.fonctionLineEdit.editingFinished.connect(self.fonction_edit)
+
 
         self.integraleLineEdit.setEnabled(False)
         self.sommeLineEdit.setEnabled(False)
