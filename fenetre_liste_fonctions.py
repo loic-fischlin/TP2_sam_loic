@@ -7,6 +7,7 @@ from liste_fonctions import ListeFonctionsModel
 
 class ListeFonctionView(QDockWidget):
     ajouterPushButton : QPushButton
+    supprimerPushButton : QPushButton
     fonctionLineEditDock : QLineEdit
     listViewFonctions : QListView
     fonctionComboBox: QComboBox
@@ -22,6 +23,7 @@ class ListeFonctionView(QDockWidget):
         self.__listeModele = ListeFonctionsModel()
 
         self.ajouterPushButton.clicked.connect(self.ajouter_fonction)
+        self.supprimerPushButton.clicked.connect(self.supprimer_fonction)
 
         self.fonctionComboBox.setModel(self.__listeModele)
         self.listViewFonctions.setModel(self.__listeModele)
@@ -38,6 +40,9 @@ class ListeFonctionView(QDockWidget):
             self.fonctionLineEditDock.clear()
         else:
             QMessageBox.critical(self, "Erreur", "Veuillez rentrez une fonction valide")
+
+    def supprimerPushButton(self):
+        fonctionASup = self.listViewFonctions.currentIndex()
 
 
 
