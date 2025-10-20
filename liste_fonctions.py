@@ -47,10 +47,10 @@ class ListeFonctionsModel(QAbstractListModel):
         return {"fonctions": self.__fonctions}
 
     @classmethod
-    def from_dict(cls, data: dict):
-        if not isinstance(data, dict) or "fonctions" not in data:
+    def from_dict(cls, data):
+        if "fonctions" not in data:
             return cls([])
-        return cls(fonctions=data["fonctions"])
+        return cls(data["fonctions"])
 
     def save_to_json(self, nom_fichier: str):
         with open(nom_fichier, "w", encoding="utf-8") as f:
