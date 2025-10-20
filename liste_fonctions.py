@@ -12,7 +12,7 @@ class ListeFonctionsModel(QAbstractListModel):
         return len(self.__fonctions)
 
     def data(self, index, role):
-        if not index.isValid() or not (0 <= index.row() < len(self.__fonctions)):
+        if not index.isValid():
             return None
 
         fonction = self.__fonctions[index.row()]
