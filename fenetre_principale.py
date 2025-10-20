@@ -1,5 +1,8 @@
+from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMainWindow, QLineEdit, QSlider, QVBoxLayout, QRadioButton, QPushButton, QMessageBox, \
-    QComboBox
+    QComboBox, QMenu
+
+from fenetre_liste_fonctions import ListeFonctionView
 from fonction_integre import FonctionModel
 from PyQt6.uic import loadUi
 
@@ -18,6 +21,8 @@ class FonctionView(QMainWindow):
     exporterPushButton : QPushButton
     sommeLineEdit : QLineEdit
     integraleLineEdit : QLineEdit
+    actionFonctions : QAction
+    menuFonctions : QMenu
 
 
     __model : FonctionModel
@@ -34,9 +39,17 @@ class FonctionView(QMainWindow):
         self.borneInfLineEdit.editingFinished.connect(self.fonction_edit)
         self.borneSupLineEdit.editingFinished.connect(self.fonction_edit)
 
+        self.actionFonctions = QAction("Ouvrir listeView", self)
+        self.actionFonctions.triggered.connect(self.ouvrir_listeview)
+        self.dock_widget = None
+
 
         self.integraleLineEdit.setEnabled(False)
         self.sommeLineEdit.setEnabled(False)
+
+    def ouvrir_listeview(self):
+        self.dock_widget = ListeFonctionView()
+        self.dock_widget.show()
 
     def calculer_edit(self):
         if self.model.fonction is None:

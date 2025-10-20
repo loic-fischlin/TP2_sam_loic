@@ -177,18 +177,12 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuFonctions">
     <property name="title">
      <string>Fonctions</string>
     </property>
     <addaction name="actionFonctions"/>
    </widget>
-   <addaction name="menuFile"/>
    <addaction name="menuFonctions"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
