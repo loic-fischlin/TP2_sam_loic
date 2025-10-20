@@ -16,7 +16,7 @@ class ListeFonctionView(QDockWidget):
 
     def __init__(self):
         super().__init__()
-        loadUi("ui/function_view2.ui", self)
+        loadUi("ui/dockwidget.ui", self)
         self.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea)
 
         self.__listeModele = ListeFonctionsModel()
@@ -35,7 +35,6 @@ class ListeFonctionView(QDockWidget):
         test_modele = FonctionModel()
         if test_modele.validate_fonction(texte):
             self.__listeModele.add_item(texte)
-            self.liste_modifiee.emit()
             self.fonctionLineEditDock.clear()
         else:
             QMessageBox.critical(self, "Erreur", "Veuillez rentrez une fonction valide")
