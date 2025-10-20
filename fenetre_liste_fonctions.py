@@ -10,23 +10,28 @@ class ListeFonctionView(QDockWidget):
     supprimerPushButton : QPushButton
     fonctionLineEditDock : QLineEdit
     listViewFonctions : QListView
-    fonctionComboBox: QComboBox
+
 
     __listeModele : ListeFonctionsModel
     liste_modifiee = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, modele_partage):
         super().__init__()
         loadUi("ui/dockwidget.ui", self)
-        self.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea)
+        self.setWindowTitle("Liste des fonctions")
+        self.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea | Qt.DockWidgetArea.LeftDockWidgetArea)
 
-        self.__listeModele = ListeFonctionsModel()
+        self.__listeModele = modele_partage
 
         self.ajouterPushButton.clicked.connect(self.ajouter_fonction)
         self.supprimerPushButton.clicked.connect(self.supprimer_fonction)
 
-        self.fonctionComboBox.setModel(self.__listeModele)
+
         self.listViewFonctions.setModel(self.__listeModele)
+
+    def closeEvent(self, event):
+        event.ignore()
+        self.hide()
 
     def ajouter_fonction(self):
         texte = self.fonctionLineEditDock.text()

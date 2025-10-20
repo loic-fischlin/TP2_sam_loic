@@ -1,11 +1,13 @@
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMainWindow, QLineEdit, QSlider, QVBoxLayout, QRadioButton, QPushButton, QMessageBox, \
-    QComboBox, QMenu
+    QComboBox, QMenu, QMenuBar
 
 from fenetre_liste_fonctions import ListeFonctionView
 from fonction_integre import FonctionModel
 from PyQt6.uic import loadUi
 
+from liste_fonctions import ListeFonctionsModel
 from mpl_canvas import MPLCanvas
 
 
@@ -23,6 +25,9 @@ class FonctionView(QMainWindow):
     integraleLineEdit : QLineEdit
     actionFonctions : QAction
     menuFonctions : QMenu
+    menubar : QMenuBar
+    fonctionComboBox : QComboBox
+
 
 
     __model : FonctionModel
@@ -38,18 +43,26 @@ class FonctionView(QMainWindow):
 
         self.borneInfLineEdit.editingFinished.connect(self.fonction_edit)
         self.borneSupLineEdit.editingFinished.connect(self.fonction_edit)
+        self.fonctionComboBox.currentIndexChanged.connect(self.fonction_edit)
 
-        self.actionFonctions = QAction("Ouvrir listeView", self)
+
         self.actionFonctions.triggered.connect(self.ouvrir_listeview)
         self.dock_widget = None
+
+        self.__listeModele = ListeFonctionsModel()
+        self.fonctionComboBox.setModel(self.__listeModele)
 
 
         self.integraleLineEdit.setEnabled(False)
         self.sommeLineEdit.setEnabled(False)
 
     def ouvrir_listeview(self):
-        self.dock_widget = ListeFonctionView()
-        self.dock_widget.show()
+        if self.dock_widget is None:
+            self.dock_widget = ListeFonctionView(self.__listeModele)
+            self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.dock_widget)
+        else:
+            self.dock_widget.show()
+            self.dock_widget.raise_()
 
     def calculer_edit(self):
         if self.model.fonction is None:
@@ -71,7 +84,7 @@ class FonctionView(QMainWindow):
 
 
     def fonction_edit(self):
-        fonct_str = self.fonctionLineEdit.text()
+        fonct_str = self.fonctionComboBox.currentText()
         if self.model.validate_fonction(fonct_str):
             self.model.fonction = fonct_str
             self.model.borne_inf = self.borneInfLineEdit.text() or 0.0
