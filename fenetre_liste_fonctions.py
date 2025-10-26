@@ -1,6 +1,8 @@
+import json
+import os.path
 
 from PyQt6.QtCore import pyqtSignal, Qt
-from PyQt6.QtWidgets import QDockWidget, QPushButton, QLineEdit, QMessageBox, QListView, QComboBox, QFileDialog
+from PyQt6.QtWidgets import QDockWidget, QPushButton, QLineEdit, QMessageBox, QListView
 from PyQt6.uic import loadUi
 from fonction_integre import FonctionModel
 from liste_fonctions import ListeFonctionsModel
@@ -24,6 +26,7 @@ class ListeFonctionView(QDockWidget):
         self.setWindowTitle("Liste des fonctions")
         self.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea | Qt.DockWidgetArea.LeftDockWidgetArea)
 
+
         self.__listeModele = modele_partage
         self.listViewFonctions.setModel(self.__listeModele)
 
@@ -42,29 +45,22 @@ class ListeFonctionView(QDockWidget):
             self.ajouterPushButton.setEnabled(True)
 
     def activer_bouton_supprimer(self):
-        if self.listViewFonctions.currentIndex():
+        if self.listViewFonctions.currentIndex().isValid():
             self.supprimerPushButton.setEnabled(True)
+        else:
+            self.supprimerPushButton.setEnabled(False)
 
     def enregistrer_donnees(self):
-        chemin, _ = QFileDialog.getSaveFileName(
-            self,
-            "Enregistrer les fonctions",
-            "",
-            "Fichiers texte (*.txt);;Tous les fichiers (*)"
-        )
-
-        if not chemin:
-            return
-
         try:
-            with open(chemin, "w", encoding="utf-8") as fichier:
-                for row in range(self.__listeModele.rowCount()):
-                    index = self.__listeModele.index(row, 0)
-                    texte = self.__listeModele.data(index)
-                    fichier.write(texte + "\n")
-            QMessageBox.information(self, "Succès", f"Fichier enregistré :\n{chemin}")
+            chemin_fichier = "json/fonctions.json"
+
+            self.__listeModele.save_to_json(chemin_fichier)
+
+            QMessageBox.information(self, "Succès", "Fichier 'fonctions.json' enregistré avec succès.")
         except Exception as e:
-            QMessageBox.critical(self, "Erreur", f"Impossible d’enregistrer le fichier:\n{str(e)}")
+            QMessageBox.critical(self, "Erreur", f"Impossible d’enregistrer le fichier : {str(e)}")
+
+
 
 
     def closeEvent(self, event):

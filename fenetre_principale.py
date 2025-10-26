@@ -48,7 +48,7 @@ class FonctionView(QMainWindow):
         self.actionFonctions.triggered.connect(self.ouvrir_listeview)
         self.dock_widget = None
 
-        self.__listeModele = ListeFonctionsModel()
+        self.__listeModele = ListeFonctionsModel().load_from_json("json/fonctions.json")
         self.fonctionComboBox.setModel(self.__listeModele)
 
 
@@ -91,9 +91,4 @@ class FonctionView(QMainWindow):
             self.nombreSlider.setMinimum(10)
             self.nombreSlider.setMaximum(100)
             self.canvas.dessiner()
-
-        else :
-            QMessageBox.critical(self, "Erreur", "La fonction est invalide")
-            self.fonctionLineEdit.clear()
-
 
