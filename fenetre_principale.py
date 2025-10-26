@@ -37,6 +37,12 @@ class FonctionView(QMainWindow):
     def __init__(self):
         super().__init__()
         loadUi("ui/function_view2.ui", self)
+        try:
+            with open("style.qss", "r") as f:
+                style = f.read()
+                self.setStyleSheet(style)
+        except FileNotFoundError:
+            print("Fichier style.qss introuvable")
 
         self.model = FonctionModel()
         self.canvas = MPLCanvas(self.model)
@@ -45,8 +51,13 @@ class FonctionView(QMainWindow):
         self.borneInfLineEdit.setPlaceholderText("0")
         self.borneSupLineEdit.setPlaceholderText("10")
 
+        self.borneInfLineEdit.textChanged.connect(lambda: self.borneInfLineEdit.setStyleSheet("background color: grey"))
+        self.borneSupLineEdit.textChanged.connect(lambda: self.borneSupLineEdit.setStyleSheet("background color: grey"))
+        self.borneInfLineEdit.editingFinished.connect(self.verifier_borne_inf)
+        self.borneSupLineEdit.editingFinished.connect(self.verifier_borne_sup)
         self.borneInfLineEdit.editingFinished.connect(self.fonction_edit)
         self.borneSupLineEdit.editingFinished.connect(self.fonction_edit)
+
         self.fonctionComboBox.currentIndexChanged.connect(self.fonction_edit)
         self.exporterPushButton.clicked.connect(self.exporter_graphique)
         self.fonctionComboBox.setIconSize(QtCore.QSize(200, 30))
@@ -93,11 +104,36 @@ class FonctionView(QMainWindow):
         fonct_str = self.fonctionComboBox.currentData(Qt.ItemDataRole.UserRole)
         if self.model.validate_fonction(fonct_str):
             self.model.fonction = fonct_str
-            self.model.borne_inf = self.borneInfLineEdit.text() or 0.0
-            self.model.borne_sup = self.borneSupLineEdit.text() or 10.0
+            self.model.borne_inf = float(self.borneInfLineEdit.text().strip() or 0.0)
+            self.model.borne_sup = float(self.borneSupLineEdit.text().strip() or 10.0)
             self.nombreSlider.setMinimum(10)
             self.nombreSlider.setMaximum(100)
             self.canvas.dessiner()
+
+    def verifier_borne_inf(self):
+        texte = self.borneInfLineEdit.text().strip()
+        if texte == "":
+            return
+        try:
+            valeur = float(texte)
+            self.model.borne_inf = valeur
+            self.borneInfLineEdit.setStyleSheet("")
+        except ValueError:
+            self.borneInfLineEdit.setStyleSheet("background-color: red")
+            QMessageBox.critical(self, "Erreur", f"Borne inférieure invalide : '{texte}'")
+
+    def verifier_borne_sup(self):
+        texte = self.borneSupLineEdit.text().strip()
+        if texte == "":
+            return
+        try:
+            valeur = float(texte)
+            self.model.borne_sup = valeur
+            self.borneSupLineEdit.setStyleSheet("")
+
+        except ValueError:
+            self.borneSupLineEdit.setStyleSheet("background-color: red")
+            QMessageBox.critical(self, "Erreur", f"Borne supérieure invalide : '{texte}'")
 
     #fonction de chatGPT
     def exporter_graphique(self):

@@ -52,8 +52,7 @@ class ListeFonctionView(QDockWidget):
             QMessageBox.critical(self, "Erreur", f"Impossible d’enregistrer le fichier : {str(e)}")
 
     def activer_bouton_ajouter(self):
-        if self.fonctionLineEditDock.text():
-            self.ajouterPushButton.setEnabled(True)
+        self.ajouterPushButton.setEnabled(bool(self.fonctionLineEditDock.text().strip()))
 
     def activer_bouton_supprimer(self):
         if self.listViewFonctions.currentIndex().isValid():
@@ -62,9 +61,8 @@ class ListeFonctionView(QDockWidget):
             self.supprimerPushButton.setEnabled(False)
 
     def ajouter_fonction(self):
-        texte = self.fonctionLineEditDock.text()
-        test_modele = FonctionModel()
-        if test_modele.validate_fonction(texte):
+        texte = self.fonctionLineEditDock.text().strip()
+        if FonctionModel().validate_fonction(texte):
             self.__listeModele.add_item(texte)
             self.fonctionLineEditDock.clear()
             self.ajouterPushButton.setEnabled(False)
