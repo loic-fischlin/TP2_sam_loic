@@ -11,6 +11,7 @@ from liste_fonctions import ListeFonctionsModel
 from mpl_canvas import MPLCanvas
 
 
+
 class FonctionView(QMainWindow):
     fonctionLineEdit : QLineEdit
     borneInfLineEdit : QLineEdit
@@ -27,8 +28,6 @@ class FonctionView(QMainWindow):
     menuFonctions : QMenu
     menubar : QMenuBar
     fonctionComboBox : QComboBox
-
-
 
     __model : FonctionModel
 
