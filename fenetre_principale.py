@@ -1,5 +1,6 @@
 from fileinput import filename
 
+from PyQt6 import QtCore
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMainWindow, QLineEdit, QSlider, QVBoxLayout, QRadioButton, QPushButton, QMessageBox, \
@@ -48,6 +49,7 @@ class FonctionView(QMainWindow):
         self.borneSupLineEdit.editingFinished.connect(self.fonction_edit)
         self.fonctionComboBox.currentIndexChanged.connect(self.fonction_edit)
         self.exporterPushButton.clicked.connect(self.exporter_graphique)
+        self.fonctionComboBox.setIconSize(QtCore.QSize(200, 30))
 
 
         self.actionFonctions.triggered.connect(self.ouvrir_listeview)

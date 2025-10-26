@@ -8,9 +8,11 @@ from PyQt6.QtCore import QAbstractListModel, Qt, QModelIndex, pyqtSignal
 class ListeFonctionsModel(QAbstractListModel):
     dataChangedSignal = pyqtSignal()
 
-    def __init__(self, fonctions=None):
+    def __init__(self, fonctions=None, icon_height=30):
         super().__init__()
         self.__fonctions = fonctions or []
+        self.icon_height = icon_height
+
 
     def rowCount(self, parent=QModelIndex()):
         return len(self.__fonctions)
@@ -47,9 +49,9 @@ class ListeFonctionsModel(QAbstractListModel):
 
         return expr
 
-    def latex_to_pixmap(self, latex_str, fontsize=14):
+    def latex_to_pixmap(self, latex_str, fontsize=16):
         fig = plt.figure(figsize=(0.01, 0.01))
-        fig.text(0, 0, f"${latex_str}$", fontsize=fontsize)
+        fig.text(0, 0, f"${latex_str}$", fontsize=fontsize, color='white')
         plt.axis('off')
         buffer = BytesIO()
         fig.savefig(buffer, format='png', bbox_inches='tight', dpi=150, transparent=True)
@@ -57,7 +59,8 @@ class ListeFonctionsModel(QAbstractListModel):
         buffer.seek(0)
         image = QImage.fromData(buffer.getvalue())
         pixmap = QPixmap.fromImage(image)
-        pixmap = pixmap.scaledToHeight(30, Qt.TransformationMode.SmoothTransformation)
+
+        pixmap = pixmap.scaledToHeight(self.icon_height, Qt.TransformationMode.SmoothTransformation)
         return pixmap
 
     def add_item(self, fonction: str):

@@ -20,6 +20,12 @@ class ListeFonctionView(QDockWidget):
     def __init__(self, modele_partage):
         super().__init__()
         loadUi("ui/dockwidget.ui", self)
+        try:
+            with open("style.qss", "r") as f:
+                style = f.read()
+                self.setStyleSheet(style)
+        except FileNotFoundError:
+            print("Fichier style.qss introuvable")
         self.setWindowTitle("Liste des fonctions")
         self.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea | Qt.DockWidgetArea.LeftDockWidgetArea)
 
