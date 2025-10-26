@@ -13,8 +13,10 @@ class MPLCanvas(FigureCanvas):
 
     def dessiner_rectagles(self, xs, ys, dx : float):
         # Tracage des rectangles inspiré de chat GPT
-        for x_i, y_i in zip(xs, ys):
-            rect_x = x_i - dx if self.__model.est_droite else x_i
+
+        for x_i, y_i in zip(xs, ys): #la boucle parcourt chaque couple d eposition(x,y) pour créer un rectangle par couple
+            rect_x = x_i - dx if self.__model.est_droite else x_i #si est_droite est true, est déplacé vers la gauche(x_i-dx), sinon commence à x_i (rectangle de gauche)
+            #création de l'objet rectangle
             rect = plt.Rectangle(
                 (rect_x, 0),
                 dx,
@@ -23,8 +25,8 @@ class MPLCanvas(FigureCanvas):
                 edgecolor="blue",
                 alpha=0.5
             )
-            self.__ax.add_patch(rect)
-            self.draw()
+            self.__ax.add_patch(rect) #Ajout des rectangle à l'axe
+            self.draw() #dessine les rectangles
 
 
     def dessiner(self):
