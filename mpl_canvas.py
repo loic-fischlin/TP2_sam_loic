@@ -52,3 +52,9 @@ class MPLCanvas(FigureCanvas):
         except Exception as e:
             QMessageBox.critical(self, "Erreur", f"La fonction n'est pas valide :\n{e}")
 
+    def exporter_image(self, filepath: str):
+        try:
+            self.__fig.savefig(filepath, bbox_inches='tight', dpi=150, transparent=False) #Par chatGPT bbox_inches change la taille de l'image, dpi change la resolution de l'image et transparent dit si le fond est opaque ou transparent
+        except Exception as e:
+            QMessageBox.critical(self, "Erreur", f"Impossible d'exporter le graphique : {e}")
+

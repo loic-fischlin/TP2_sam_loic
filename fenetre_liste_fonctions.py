@@ -27,7 +27,7 @@ class ListeFonctionView(QDockWidget):
         self.listViewFonctions.setModel(self.__listeModele)
 
         self.ajouterPushButton.setEnabled(False)
-        self.supprimerPushButton.setEnabled(False)
+        self.activer_bouton_supprimer()
         self.fonctionLineEditDock.textChanged.connect(self.activer_bouton_ajouter)
         self.listViewFonctions.selectionModel().selectionChanged.connect(self.activer_bouton_supprimer)
 
@@ -68,7 +68,7 @@ class ListeFonctionView(QDockWidget):
     def supprimer_fonction(self):
         fonctionSupp = self.listViewFonctions.currentIndex()
         self.__listeModele.remove_item(fonctionSupp.row())
-        self.supprimerPushButton.setEnabled(False)
+        self.activer_bouton_supprimer()
 
 
     def closeEvent(self, event):

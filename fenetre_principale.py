@@ -1,7 +1,9 @@
+from fileinput import filename
+
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMainWindow, QLineEdit, QSlider, QVBoxLayout, QRadioButton, QPushButton, QMessageBox, \
-    QComboBox, QMenu, QMenuBar
+    QComboBox, QMenu, QMenuBar, QFileDialog
 
 from fenetre_liste_fonctions import ListeFonctionView
 from fonction_integre import FonctionModel
@@ -39,10 +41,13 @@ class FonctionView(QMainWindow):
         self.canvas = MPLCanvas(self.model)
         self.canvas_layout.addWidget(self.canvas)
         self.calculerPushButton.clicked.connect(self.calculer_edit)
+        self.borneInfLineEdit.setPlaceholderText("0")
+        self.borneSupLineEdit.setPlaceholderText("10")
 
         self.borneInfLineEdit.editingFinished.connect(self.fonction_edit)
         self.borneSupLineEdit.editingFinished.connect(self.fonction_edit)
         self.fonctionComboBox.currentIndexChanged.connect(self.fonction_edit)
+        self.exporterPushButton.clicked.connect(self.exporter_graphique)
 
 
         self.actionFonctions.triggered.connect(self.ouvrir_listeview)
@@ -83,7 +88,7 @@ class FonctionView(QMainWindow):
 
 
     def fonction_edit(self):
-        fonct_str = self.fonctionComboBox.currentText()
+        fonct_str = self.fonctionComboBox.currentData(Qt.ItemDataRole.UserRole)
         if self.model.validate_fonction(fonct_str):
             self.model.fonction = fonct_str
             self.model.borne_inf = self.borneInfLineEdit.text() or 0.0
@@ -91,4 +96,16 @@ class FonctionView(QMainWindow):
             self.nombreSlider.setMinimum(10)
             self.nombreSlider.setMaximum(100)
             self.canvas.dessiner()
+
+    #fonction de chatGPT
+    def exporter_graphique(self):
+        filename, _ = QFileDialog.getSaveFileName( #le QFileDialog ouvre l'explorateur de fichier
+            self,
+            "Exporter le graphique",
+            "",
+            "Images PNG (*.png);;JPEG (*.jpg);;All Files (*)"
+        )
+
+        if filename:
+            self.canvas.exporter_image(filename)
 

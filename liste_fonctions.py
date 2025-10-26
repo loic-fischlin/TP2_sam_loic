@@ -1,3 +1,7 @@
+import os
+import matplotlib.pyplot as plt
+from PyQt6.QtGui import QPixmap, QImage
+from io import BytesIO
 import json
 from PyQt6.QtCore import QAbstractListModel, Qt, QModelIndex, pyqtSignal
 
@@ -15,15 +19,46 @@ class ListeFonctionsModel(QAbstractListModel):
         if not index.isValid():
             return None
 
-        fonction = self.__fonctions[index.row()]
+        fonction_python = self.__fonctions[index.row()]
 
-        if role == Qt.ItemDataRole.DisplayRole:
-            return str(fonction)
-        elif role == Qt.ItemDataRole.UserRole:
-            return fonction
+        if role == Qt.ItemDataRole.DecorationRole:
+            latex_expr = self.python_to_latex(fonction_python)
+            return self.latex_to_pixmap(latex_expr)
+
         elif role == Qt.ItemDataRole.ToolTipRole:
-            return f"Fonction : {fonction}"
+            return f"Fonction : {fonction_python}"
+
+        elif role == Qt.ItemDataRole.UserRole:
+            return fonction_python
+
         return None
+
+    def python_to_latex(self, expr: str) -> str:
+        """Convertit x**2 en x^2 et x*y en x·y pour un rendu manuscrit"""
+        import re
+        def replacer(match):
+            base = match.group(1)
+            exp = match.group(2)
+            return f"{base}^{{{exp}}}"  # x^2 -> x^{2}
+
+        expr = re.sub(r'([a-zA-Z0-9]+)\*\*([0-9]+)', replacer, expr)
+
+        expr = expr.replace("*", r"\cdot ")
+
+        return expr
+
+    def latex_to_pixmap(self, latex_str, fontsize=14):
+        fig = plt.figure(figsize=(0.01, 0.01))
+        fig.text(0, 0, f"${latex_str}$", fontsize=fontsize)
+        plt.axis('off')
+        buffer = BytesIO()
+        fig.savefig(buffer, format='png', bbox_inches='tight', dpi=150, transparent=True)
+        plt.close(fig)
+        buffer.seek(0)
+        image = QImage.fromData(buffer.getvalue())
+        pixmap = QPixmap.fromImage(image)
+        pixmap = pixmap.scaledToHeight(30, Qt.TransformationMode.SmoothTransformation)
+        return pixmap
 
     def add_item(self, fonction: str):
         if not fonction or fonction == "":
@@ -59,6 +94,12 @@ class ListeFonctionsModel(QAbstractListModel):
 
     @classmethod
     def load_from_json(cls, filepath: str):
-        with open(filepath, "r", encoding="utf-8") as f:
+        if not os.path.exists(filepath):
+            return cls([])
+
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 return cls.from_dict(data)
+        except Exception:
+            return cls([])

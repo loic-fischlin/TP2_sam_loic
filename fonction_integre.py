@@ -71,8 +71,8 @@ class FonctionModel(QObject):
     def validate_fonction(self, f_str):
         try:
             expr = sp.sympify(f_str)
-            if self.__x not in expr.free_symbols:
-                print("La fonction doit contenir la variable x.")
+            if expr.free_symbols != {self.__x}:
+                print("La fonction ne doit contenir qu'une seule variable x.")
                 return False
             sp.lambdify(self.__x, expr, "numpy")
             return True
