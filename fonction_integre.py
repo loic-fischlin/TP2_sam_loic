@@ -28,8 +28,12 @@ class FonctionModel(QObject):
 
     @fonction.setter
     def fonction(self, value):
-        self.__fonction = sp.sympify(value)
-        self.modelChanged.emit()
+        try:
+            self.__fonction = sp.sympify(value)
+            self.modelChanged.emit()
+        except Exception as e:
+            print(f"Erreur : fonction invalide -> {e}")
+            self.__fonction = None
 
     @property
     def est_droite(self):

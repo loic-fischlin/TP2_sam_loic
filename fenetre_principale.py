@@ -31,6 +31,7 @@ class FonctionView(QMainWindow):
     menuFonctions : QMenu
     menubar : QMenuBar
     fonctionComboBox : QComboBox
+    actionQuitter_2: QAction
 
     __model : FonctionModel
 
@@ -72,6 +73,8 @@ class FonctionView(QMainWindow):
 
         self.integraleLineEdit.setEnabled(False)
         self.sommeLineEdit.setEnabled(False)
+
+        self.actionQuitter_2.triggered.connect(self.close)
 
     def ouvrir_listeview(self):
         if self.dock_widget is None:

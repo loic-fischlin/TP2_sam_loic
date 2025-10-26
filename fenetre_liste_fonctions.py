@@ -1,6 +1,7 @@
 import os.path
 import subprocess
 from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QDockWidget, QPushButton, QLineEdit, QMessageBox, QListView
 from PyQt6.uic import loadUi
 from fonction_integre import FonctionModel
@@ -13,6 +14,7 @@ class ListeFonctionView(QDockWidget):
     enregistrerPushButton: QPushButton
     fonctionLineEditDock: QLineEdit
     listViewFonctions: QListView
+
 
     __listeModele: ListeFonctionsModel
     liste_modifiee = pyqtSignal()
@@ -41,6 +43,7 @@ class ListeFonctionView(QDockWidget):
         self.supprimerPushButton.clicked.connect(self.supprimer_fonction)
         self.enregistrerPushButton.clicked.connect(self.enregistrer_donnees)
 
+
     def enregistrer_donnees(self):
         try:
             chemin_fichier = "json/fonctions.json"
@@ -62,12 +65,14 @@ class ListeFonctionView(QDockWidget):
 
     def ajouter_fonction(self):
         texte = self.fonctionLineEditDock.text().strip()
-        if FonctionModel().validate_fonction(texte):
+        modele_temp = FonctionModel()
+        if not modele_temp.validate_fonction(texte):
+            QMessageBox.critical(self, "Erreur", "Veuillez rentrez une fonction valide")
+
+        else:
             self.__listeModele.add_item(texte)
             self.fonctionLineEditDock.clear()
             self.ajouterPushButton.setEnabled(False)
-        else:
-            QMessageBox.critical(self, "Erreur", "Veuillez rentrez une fonction valide")
 
     def supprimer_fonction(self):
         fonctionSupp = self.listViewFonctions.currentIndex()
