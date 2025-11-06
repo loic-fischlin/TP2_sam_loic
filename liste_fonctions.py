@@ -17,7 +17,7 @@ class ListeFonctionsModel(QAbstractListModel):
     def rowCount(self, parent=QModelIndex()):
         return len(self.__fonctions)
 
-    def data(self, index, role):
+    def data(self, index, role = 0):
         if not index.isValid():
             return None
 
