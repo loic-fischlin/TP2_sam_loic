@@ -129,4 +129,4 @@ class FonctionModel(QObject):
         self.modelChanged.emit()
         return somme, xs, ys, dx
 
-
+#changements
